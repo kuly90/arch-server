@@ -31,13 +31,14 @@ connection.connect(err => {
     }
 });
 
+
 app.use(cors());
 // Setting up bodyParser to use json and set it to req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) =>{
-    res.send('go to users arch Viet Nam');
+    res.send('go to arch Viet Nam');
 });
 
 // Send email with mail send is gmail....
@@ -87,14 +88,14 @@ app.get('/send-email', (req,res) => {
         if(err){
             return res.send(err)
         }
-        else res.send('added user success !')
+        else res.send('added CUSTOMER success !')
     })
     
 });
 
-app.get('/users', (req, res) =>{
-    const All_User = 'SELECT * FROM user';
-    connection.query(All_User, (err, results) => {
+app.get('/customers', (req, res) =>{
+    const ALL_CUSTOMERS = 'SELECT * FROM customers';
+    connection.query(ALL_CUSTOMERS, (err, results) => {
         if(err){
             return res.send(err)
         }else{
@@ -105,16 +106,6 @@ app.get('/users', (req, res) =>{
     });
 });
 
-app.get('/users/add', (req, res) =>{
-    const {username, password } = req.query;
-    const INSERT_USER = `INSERT INTO user(username, password) VALUES('${username}',' ${password}')`;
-    connection.query(INSERT_USER, (err, results) => {
-        if(err){
-            return res.send(err)
-        }
-        else res.send('added user success !')
-    })
-});
 
 app.get('/users/editUser', (req, res) =>{
     const {username, password, id} = req.query;
@@ -127,14 +118,14 @@ app.get('/users/editUser', (req, res) =>{
     })
 });
 
-app.get('/users/deleteUser', (req, res) =>{
+app.get('/customers/deleteCustomer', (req, res) =>{
     const {id} = req.query;
-    const DELETE_USER = `DELETE FROM user WHERE id = ${id}`;
-    connection.query(DELETE_USER, (err, results) => {
+    const DELETE_CUSTOMER = `DELETE FROM customers WHERE id = ${id}`;
+    connection.query(DELETE_CUSTOMER, (err, results) => {
         if(err){
             return res.send(err)
         }
-        else res.send('delete user success !')
+        else res.send('delete customer success !')
     })
 });
 

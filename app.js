@@ -48,7 +48,7 @@ app.get('/send-email', (req, res) => {
 	//get current datetime format
 	var dt = dateTime.create();
 	var date_create = dt.format('Y-m-d H:M');
-	const INSERT_CUSTOMERS = `INSERT INTO customers(name, email, subject, message, date_create) VALUES('${name}', '${email}', '${subject}', '${message}', '${date_create}')`;
+	const INSERT_CUSTOMERS = `INSERT INTO customers(name, email, subject, message, date_create, status) VALUES('${name}', '${email}', '${subject}', '${message}', '${date_create}', '0')`;
 	nodemailer.createTestAccount((err, acount) => {
 		const htmlEmail = `
             <h4>Deaer ${name},</h4>
@@ -112,16 +112,31 @@ app.get('/customers', (req, res) => {
 });
 
 
-app.get('/users/editUser', (req, res) => {
-	const { username, password, id } = req.query;
-	const INSERT_USER = `UPDATE user SET username = '${username}', password = '${password}' WHERE id = ${id}`;
-	connection.query(INSERT_USER, (err, results) => {
+// count message don't read
+app.get('/customers/count', (req, res) => {
+	const SELECT_COUNT = `SELECT COUNT (*) FROM customers WHERE status = '0'`;
+	connection.query(SELECT_COUNT, (err, results) => {
+		if(err){
+			return res.send(err)
+		}else{
+			res.json({
+				data: results
+			})
+		}
+	})
+});
+
+app.get('/customers/updateStatus', (req, res) => {
+	const { status, id } = req.query;
+	const UPDATE_CUSTOMR = `UPDATE customers SET status = '${status}' WHERE id = ${id}`;
+	connection.query(UPDATE_CUSTOMR, (err, results) => {
 		if (err) {
 			return res.send(err)
 		}
-		else res.send('edit user success !')
+		else res.send('update status success !')
 	})
 });
+
 
 app.get('/customers/deleteCustomer', (req, res) => {
 	const { id } = req.query;

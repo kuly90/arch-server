@@ -24,6 +24,7 @@ CREATE TABLE `customers` (
   `email` varchar(100) NOT NULL,
   `subject` varchar(100) not null,
   `message` varchar(1500) not null,
+  `date_create` varchar(20) not null,
   UNIQUE KEY `CUSTOMERS_ID_UNIQUE` (`id`)
   
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

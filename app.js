@@ -51,7 +51,7 @@ app.get('/send-email', (req, res) => {
 	const INSERT_CUSTOMERS = `INSERT INTO customers(name, email, subject, message, date_create, status) VALUES('${name}', '${email}', '${subject}', '${message}', '${date_create}', '0')`;
 	nodemailer.createTestAccount((err, acount) => {
 		const htmlEmail = `
-            <h4>Deaer ${name},</h4>
+            <h4>Dear ${name},</h4>
             <span>Thank you for have ideas for our Company. We received your message and will reply you as soon as.</span><br/>
             <span>Best Regard !</span><br/>           
             <h4>ARCH VIETNAM Co. Ltd</h4>
@@ -98,6 +98,7 @@ app.get('/send-email', (req, res) => {
 
 });
 
+//get all customer
 app.get('/customers', (req, res) => {
 	const ALL_CUSTOMERS = 'SELECT * FROM customers ORDER BY date_create DESC';
 	connection.query(ALL_CUSTOMERS, (err, results) => {
@@ -111,10 +112,24 @@ app.get('/customers', (req, res) => {
 	});
 });
 
+//find customer by id
+app.get('/customers/findById', (req, res) => {
+	const { id } = req.query;
+	const FIND_CUSTOMER_BY_ID = `SELECT * FROM customers WHERE id = ${id}`;
+	connection.query(FIND_CUSTOMER_BY_ID, (err, results) => {
+		if(err){
+			return res.send(err)
+		}else{
+			return res.json({
+				data: results
+			})
+		}
+	});
+});
 
 // count message don't read
 app.get('/customers/count', (req, res) => {
-	const SELECT_COUNT = `SELECT COUNT (*) FROM customers WHERE status = '0'`;
+	const SELECT_COUNT = `SELECT * FROM customers WHERE status = '0'`;
 	connection.query(SELECT_COUNT, (err, results) => {
 		if(err){
 			return res.send(err)
@@ -126,6 +141,7 @@ app.get('/customers/count', (req, res) => {
 	})
 });
 
+// update status
 app.get('/customers/updateStatus', (req, res) => {
 	const { status, id } = req.query;
 	const UPDATE_CUSTOMR = `UPDATE customers SET status = '${status}' WHERE id = ${id}`;
@@ -137,7 +153,7 @@ app.get('/customers/updateStatus', (req, res) => {
 	})
 });
 
-
+// delete customer
 app.get('/customers/deleteCustomer', (req, res) => {
 	const { id } = req.query;
 	const DELETE_CUSTOMER = `DELETE FROM customers WHERE id = ${id}`;

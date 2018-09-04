@@ -42,6 +42,33 @@ app.get('/', (req, res) => {
 	res.send('go to arch Viet Nam');
 });
 
+// Insert New
+app.get('/addNews', (req, res) => {
+	const { title, body } = req.query;
+	var dt2 = dateTime.create();
+	var date_create2 = dt2.format('Y-m-d');
+	const ADD_NEWS = `INSERT INTO news (title, body, date_create, status) VALUES ('${title}', '${body}', '${date_create2}', '0')`;
+	connection.query(ADD_NEWS, (err, results) => {
+		if (err) {
+			return res.send(err)
+		} else res.send('Add News Success !')
+	});
+});
+
+// get List news
+app.get('/listnews', (req, res) => {
+	const ALL_NEWS = 'SELECT * FROM news ORDER By date_create DESC';
+	connection.query(ALL_NEWS, (err, results) => {
+		if(err){
+			return res.send(err)
+		}else{
+			return res.json({
+				data: results
+			})
+		}
+	})
+})
+
 // Send email with mail send is gmail....
 app.get('/send-email', (req, res) => {
 	const { name, email, subject, message } = req.query;
@@ -57,7 +84,7 @@ app.get('/send-email', (req, res) => {
             <h4>ARCH VIETNAM Co. Ltd</h4>
             <span>Address: Tầng 17, Danang Software Park
             Số 02 Quang Trung, quận Hải Châu, thành phố Đà Nẵng.</span><br/> 
-						<span>https://arch-vietnam.vn</span><br/>
+						<span>Website: https://arch-vietnam.vn</span><br/>
 						<span>Facebook: ARCH VietNam - Offshore Company</span><br/>
 						<span>Cellphone: 02363-888-575</span>           
         `
@@ -89,6 +116,7 @@ app.get('/send-email', (req, res) => {
 			console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 		});
 	}),
+		// Insert Customer to database
 		connection.query(INSERT_CUSTOMERS, (err, results) => {
 			if (err) {
 				return res.send(err)
@@ -117,9 +145,9 @@ app.get('/customers/findById', (req, res) => {
 	const { id } = req.query;
 	const FIND_CUSTOMER_BY_ID = `SELECT * FROM customers WHERE id = ${id}`;
 	connection.query(FIND_CUSTOMER_BY_ID, (err, results) => {
-		if(err){
+		if (err) {
 			return res.send(err)
-		}else{
+		} else {
 			return res.json({
 				data: results
 			})
@@ -131,10 +159,10 @@ app.get('/customers/findById', (req, res) => {
 app.get('/customers/count', (req, res) => {
 	const SELECT_COUNT = `SELECT * FROM customers WHERE status = '0'`;
 	connection.query(SELECT_COUNT, (err, results) => {
-		if(err){
+		if (err) {
 			return res.send(err)
-		}else{
-			res.json({
+		} else {
+				return res.json({
 				data: results
 			})
 		}

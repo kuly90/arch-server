@@ -159,6 +159,49 @@ app.get('/send-email', (req, res) => {
 
 });
 
+//rep mail to customer
+app.get('/reply-email', (req, res) => {
+	const { email, subject, message } = req.query;
+	nodemailer.createTestAccount((err, acount) => {
+		const htmlEmail = `
+            <span>${message}</span><br/>          
+            <h4>ARCH VIETNAM Co. Ltd</h4>
+            <span>Address: Tầng 17, Danang Software Park
+            Số 02 Quang Trung, quận Hải Châu, thành phố Đà Nẵng.</span><br/> 
+						<span>Website: https://arch-vietnam.vn</span><br/>
+						<span>Facebook: ARCH VietNam - Offshore Company</span><br/>
+						<span>Cellphone: 02363-888-575</span>           
+        `
+		let transporter = nodemailer.createTransport({
+			service: 'gmail',
+			secure: false, // true for 465, false for other ports
+			auth: {
+				user: 'tonthat90@gmail.com', // generated ethereal user
+				pass: 'hoilamchy321' // generated ethereal password
+			}
+		});
+
+		// setup email data with unicode symbols
+		let mailOptions = {
+			from: '"Ly Ku 👻" <tonthat90@gmail.com>', // sender address
+			to: `${email}, tonthat90@gmail.com`, // list of receivers
+			subject: subject, // Subject line
+			text: message, // plain text body
+			html: htmlEmail // html body
+		};
+
+		// send mail with defined transport object
+		transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+				return console.log(error);
+			}
+			console.log('Message sent: %s', info.messageId);
+			// Preview only available when sending through an Ethereal account
+			console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+		});
+	})
+});
+
 //get all customer
 app.get('/customers', (req, res) => {
 	const ALL_CUSTOMERS = 'SELECT * FROM customers ORDER BY date_create DESC';

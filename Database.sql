@@ -9,8 +9,9 @@ DROP TABLE IF EXISTS `news`;
 CREATE TABLE `news` (
   `id` int(11) NOT NULL auto_increment,
   `title` varchar(160) NOT NULL,
-  `content` varchar(1500) NOT NULL,
-  `creat_date` date not null,
+  `body` varchar(3000) NOT NULL,
+  `date_create` varchar(20) not null,
+  `status` char(1) not null,
   UNIQUE KEY `NEWS_ID_UNIQUE` (`id`)
   
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

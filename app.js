@@ -69,6 +69,39 @@ app.get('/listnews', (req, res) => {
 	})
 })
 
+//change Status of News to Hirring (staus == '0')
+app.get('/changeToHirring', (req, res) => {
+	const { status, id } = req.query;
+	const UPDATE__TO_HIRRING = `UPDATE news SET status='${status}' WHERE id=${id}`;
+	connection.query(UPDATE__TO_HIRRING, (err, results) => {
+		if(err){
+			return res.send(err)
+		}else res.send('Update News To Hirring Success !')
+	});
+});
+
+// change status of News to Hired (status == 1)
+app.get('/changeToHired', (req, res) => {
+	const { status, id } = req.query;
+	const UPDATE_TO_HIRED = `UPDATE news SET status='${status}' WHERE id=${id}`;
+	connection.query(UPDATE_TO_HIRED, (err, results) => {
+		if(err){
+			return res.send(err)
+		}else res.send('Update News To Hired Success !')
+	});
+});
+
+//Delete News
+app.get('/deleteNews', (req, res) => {
+	const { id } = req.query;
+	const DEL_NEWS = `DELETE FROM news where id=${id}`;
+	connection.query(DEL_NEWS, (err, results) => {
+		if(err){
+			return res.send(err)
+		}else res.send('Delete news success!')
+	});
+});
+
 // Send email with mail send is gmail....
 app.get('/send-email', (req, res) => {
 	const { name, email, subject, message } = req.query;

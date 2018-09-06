@@ -102,6 +102,19 @@ app.get('/deleteNews', (req, res) => {
 	});
 });
 
+//Update News
+app.get('/listNews/editNews', (req, res) => {
+	const { title, body, id } = req.query;
+	var dt3 = dateTime.create();
+	var date_create3 = dt3.format('Y-m-d');
+	const UPDATE_NEWS = `UPDATE news SET title='${title}', body='${body}', date_create='${date_create3}' WHERE id=${id}`;
+	connection.query(UPDATE_NEWS, (err, results) => {
+		if(err){
+			return res.send(err)
+		}else res.send('update news success !!')
+	});
+});
+
 // Send email with mail send is gmail....
 app.get('/send-email', (req, res) => {
 	const { name, email, subject, message } = req.query;
@@ -113,7 +126,8 @@ app.get('/send-email', (req, res) => {
 		const htmlEmail = `
             <h4>Dear ${name},</h4>
             <span>Thank you for have ideas for our Company. We received your message and will reply you as soon as.</span><br/>
-            <span>Best Regard !</span><br/>           
+			<span>Best Regard !</span><br/>    
+			<span>Please dont reply this email !</span><br/>       
             <h4>ARCH VIETNAM Co. Ltd</h4>
             <span>Address: Tầng 17, Danang Software Park
             Số 02 Quang Trung, quận Hải Châu, thành phố Đà Nẵng.</span><br/> 
@@ -164,7 +178,9 @@ app.get('/reply-email', (req, res) => {
 	const { email, subject, message } = req.query;
 	nodemailer.createTestAccount((err, acount) => {
 		const htmlEmail = `
-            <span>${message}</span><br/>          
+			<span>${message}</span><br/>
+			<span>Best Regard !</span><br/>
+			<span>Please dont reply this email !</span><br/>          
             <h4>ARCH VIETNAM Co. Ltd</h4>
             <span>Address: Tầng 17, Danang Software Park
             Số 02 Quang Trung, quận Hải Châu, thành phố Đà Nẵng.</span><br/> 

@@ -57,7 +57,7 @@ app.get('/addNews', (req, res) => {
 
 // get List news
 app.get('/listnews', (req, res) => {
-	const ALL_NEWS = 'SELECT * FROM news ORDER By date_create DESC';
+	const ALL_NEWS = 'SELECT * FROM news ORDER By status ASC, date_create DESC';
 	connection.query(ALL_NEWS, (err, results) => {
 		if (err) {
 			return res.send(err)

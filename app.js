@@ -59,9 +59,9 @@ app.get('/addNews', (req, res) => {
 app.get('/listnews', (req, res) => {
 	const ALL_NEWS = 'SELECT * FROM news ORDER By date_create DESC';
 	connection.query(ALL_NEWS, (err, results) => {
-		if(err){
+		if (err) {
 			return res.send(err)
-		}else{
+		} else {
 			return res.json({
 				data: results
 			})
@@ -74,9 +74,9 @@ app.get('/changeToHirring', (req, res) => {
 	const { status, id } = req.query;
 	const UPDATE__TO_HIRRING = `UPDATE news SET status='${status}' WHERE id=${id}`;
 	connection.query(UPDATE__TO_HIRRING, (err, results) => {
-		if(err){
+		if (err) {
 			return res.send(err)
-		}else res.send('Update News To Hirring Success !')
+		} else res.send('Update News To Hirring Success !')
 	});
 });
 
@@ -85,9 +85,9 @@ app.get('/changeToHired', (req, res) => {
 	const { status, id } = req.query;
 	const UPDATE_TO_HIRED = `UPDATE news SET status='${status}' WHERE id=${id}`;
 	connection.query(UPDATE_TO_HIRED, (err, results) => {
-		if(err){
+		if (err) {
 			return res.send(err)
-		}else res.send('Update News To Hired Success !')
+		} else res.send('Update News To Hired Success !')
 	});
 });
 
@@ -96,9 +96,9 @@ app.get('/deleteNews', (req, res) => {
 	const { id } = req.query;
 	const DEL_NEWS = `DELETE FROM news where id=${id}`;
 	connection.query(DEL_NEWS, (err, results) => {
-		if(err){
+		if (err) {
 			return res.send(err)
-		}else res.send('Delete news success!')
+		} else res.send('Delete news success!')
 	});
 });
 
@@ -109,9 +109,24 @@ app.get('/listNews/editNews', (req, res) => {
 	var date_create3 = dt3.format('Y-m-d');
 	const UPDATE_NEWS = `UPDATE news SET title='${title}', body='${body}', date_create='${date_create3}' WHERE id=${id}`;
 	connection.query(UPDATE_NEWS, (err, results) => {
+		if (err) {
+			return res.send(err)
+		} else res.send('update news success !!')
+	});
+});
+
+// Find News by Id
+app.get('/listnews/findById', (req, res) => {
+	const { id } = req.query;
+	const FIND_NEWS_BY_ID = `SELECT * FROM news WHERE id=${id}`;
+	connection.query(FIND_NEWS_BY_ID, (err, results) => {
 		if(err){
 			return res.send(err)
-		}else res.send('update news success !!')
+		} else {
+			return res.json({
+				data: results
+			})
+		}
 	});
 });
 
@@ -254,7 +269,7 @@ app.get('/customers/count', (req, res) => {
 		if (err) {
 			return res.send(err)
 		} else {
-				return res.json({
+			return res.json({
 				data: results
 			})
 		}

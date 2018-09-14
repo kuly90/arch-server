@@ -14,7 +14,6 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const exjwt = require('express-jwt');
 var dateTime = require('node-datetime');
-const sgMail = require('@sendgrid/mail'); //sendgrid library to send emails 
 const nodemailer = require('nodemailer');
 
 const app = express(); //alias from the express function

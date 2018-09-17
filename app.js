@@ -43,10 +43,10 @@ app.get('/', (req, res) => {
 
 // Insert New
 app.get('/addNews', (req, res) => {
-	const { title, body } = req.query;
+	const { title, body, author } = req.query;
 	var dt2 = dateTime.create();
 	var date_create2 = dt2.format('Y-m-d');
-	const ADD_NEWS = `INSERT INTO news (title, body, date_create, status) VALUES ('${title}', '${body}', '${date_create2}', '0')`;
+	const ADD_NEWS = `INSERT INTO news (title, body, date_create, status, author) VALUES ('${title}', '${body}', '${date_create2}', '0', '${author}')`;
 	connection.query(ADD_NEWS, (err, results) => {
 		if (err) {
 			return res.send(err)
@@ -106,7 +106,7 @@ app.get('/listNews/editNews', (req, res) => {
 	const { title, body, id } = req.query;
 	var dt3 = dateTime.create();
 	var date_create3 = dt3.format('Y-m-d');
-	const UPDATE_NEWS = `UPDATE news SET title='${title}', body='${body}', date_create='${date_create3}' WHERE id=${id}`;
+	const UPDATE_NEWS = `UPDATE news SET title='${title}', body='${body}', date_update='${date_create3}' WHERE id=${id}`;
 	connection.query(UPDATE_NEWS, (err, results) => {
 		if (err) {
 			return res.send(err)

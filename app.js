@@ -299,16 +299,16 @@ app.get('/customers/deleteCustomer', (req, res) => {
 	})
 });
 
-app.get('/users/searchUser', (req, res) => {
-	const { id, username } = req.query;
-	const SEARCH_USER = `SELECT * FROM user WHERE id LIKE '%${id}%' OR username LIKE '%${username}%'`;
-	connection.query(SEARCH_USER, (err, results) => {
+app.get('/users', (req, res) => {
+	const ALL_USERS = `SELECT * FROM users `;
+	connection.query(ALL_USERS, (err, results) => {
 		if (err) {
 			return res.send(err)
 		} else {
 			return res.json({
 				data: results
 			})
+			
 		}
 	});
 });
@@ -326,28 +326,37 @@ const jwtMW = exjwt({
 	secret: 'keyboard cat 4 ever'
 });
 
-
 // MOCKING DB just for test
-let users = [
-	{
-		id: 1,
-		username: 'kuly',
-		password: '123456'
-	},
-	{
-		id: 2,
-		username: 'ronaldo',
-		password: '1234567'
-	},
-	{
-		id: 3,
-		username: 'neymar',
-		password: '1234568'
-	}
-];
+// let users = [
+// 	{
+// 		id: 1,
+// 		username: 'kuly',
+// 		password: '123456'
+// 	},
+// 	{
+// 		id: 2,
+// 		username: 'ronaldo',
+// 		password: '1234567'
+// 	},
+// 	{
+// 		id: 3,
+// 		username: 'neymar',
+// 		password: '1234568'
+// 	}
+// ];
+
 
 // LOGIN ROUTE
 app.post('/login', (req, res) => {
+	// get users from DB
+	let users = [];
+	connection.query("select * from users", function(err,results){
+		if(err){
+			console.log(err);
+			return;
+		}
+		users = results;
+	});	
 	const { username, password } = req.body;
 	// Use your DB ORM logic here to find user and compare password
 	for (let user of users) { // I am using a simple array users which i made above

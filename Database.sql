@@ -50,6 +50,7 @@ CREATE TABLE `users` (
   `address` varchar(20) default null,
   `birthday` varchar(20) default null,
   `phone` varchar(11) default null,
+  `username_create`varchar(100) not null,
   UNIQUE KEY `CUSTOMERS_ID_UNIQUE` (`id`)
   
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

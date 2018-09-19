@@ -299,6 +299,7 @@ app.get('/customers/deleteCustomer', (req, res) => {
 	})
 });
 
+// get users
 app.get('/users', (req, res) => {
 	const ALL_USERS = `SELECT * FROM users `;
 	connection.query(ALL_USERS, (err, results) => {
@@ -313,6 +314,20 @@ app.get('/users', (req, res) => {
 	});
 });
 
+// add user
+app.get('/users/addUser', (req,res) => {
+	const { username, email, password, fullname, rolename, address, birthday, phone, username_create } = req.query;
+	var dt4 = dateTime.create();
+	var date_create4 = dt4.format('Y-m-d');
+	const INSERT_USER = `INSERT INTO users(username, email, password, fullname, date_create, rolename, address, birthday, phone, username_create) VALUES
+				('${username}', '${email}', '${password}', '${fullname}', '${date_create4}', '${rolename}', '${address}', '${birthday}', '${phone}', '${username_create}')`;
+	connection.query(INSERT_USER, (err, results) => {
+		if(err){
+			return res.send(err)
+		}else res.send('insert user success !')
+	});
+});
+
 // See the react auth blog in which cors is required for access
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -324,6 +339,16 @@ app.use((req, res, next) => {
 // INstantiating the express-jwt middleware
 const jwtMW = exjwt({
 	secret: 'keyboard cat 4 ever'
+});
+
+//get users from DB
+let users = [];
+connection.query("select * from users", function(err,results){
+	if(err){
+		console.log(err);
+		return;
+	}
+	users = results;
 });
 
 // MOCKING DB just for test
@@ -345,18 +370,9 @@ const jwtMW = exjwt({
 // 	}
 // ];
 
-
 // LOGIN ROUTE
 app.post('/login', (req, res) => {
-	// get users from DB
-	let users = [];
-	connection.query("select * from users", function(err,results){
-		if(err){
-			console.log(err);
-			return;
-		}
-		users = results;
-	});	
+		
 	const { username, password } = req.body;
 	// Use your DB ORM logic here to find user and compare password
 	for (let user of users) { // I am using a simple array users which i made above

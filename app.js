@@ -351,24 +351,6 @@ connection.query("select * from users", function(err,results){
 	users = results;
 });
 
-// MOCKING DB just for test
-// let users = [
-// 	{
-// 		id: 1,
-// 		username: 'kuly',
-// 		password: '123456'
-// 	},
-// 	{
-// 		id: 2,
-// 		username: 'ronaldo',
-// 		password: '1234567'
-// 	},
-// 	{
-// 		id: 3,
-// 		username: 'neymar',
-// 		password: '1234568'
-// 	}
-// ];
 
 // LOGIN ROUTE
 app.post('/login', (req, res) => {
